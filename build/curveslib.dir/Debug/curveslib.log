@@ -1,0 +1,12 @@
+﻿  Building Custom Rule C:/Users/Claire/Desktop/TestAssgnmentProject/CMakeLists.txt
+cl : command line  warning D9002: ignoring unknown option '-std=c++11'
+  Curves.cpp
+C:\Users\Claire\Desktop\TestAssgnmentProject\Curves.h(14,9): warning C4514: 'Vector3::getX': unreferenced inline function has been removed
+C:\Users\Claire\Desktop\TestAssgnmentProject\Curves.h(17,9): warning C4514: 'Vector3::getY': unreferenced inline function has been removed
+C:\Users\Claire\Desktop\TestAssgnmentProject\Curves.h(20,9): warning C4514: 'Vector3::getZ': unreferenced inline function has been removed
+C:\Users\Claire\Desktop\TestAssgnmentProject\Curves.h(37,2): warning C4514: 'Circle::Circle': unreferenced inline function has been removed
+C:\Users\Claire\Desktop\TestAssgnmentProject\Curves.h(49,2): warning C4514: 'Ellipse::Ellipse': unreferenced inline function has been removed
+C:\Users\Claire\Desktop\TestAssgnmentProject\Curves.h(62,2): warning C4514: 'Helix::Helix': unreferenced inline function has been removed
+  Auto build dll exports
+     Creating library C:/Users/Claire/Desktop/TestAssgnmentProject/build/Debug/curveslib.lib and object C:/Users/Claire/Desktop/TestAssgnmentProject/build/Debug/curveslib.exp
+  curveslib.vcxproj -> C:\Users\Claire\Desktop\TestAssgnmentProject\build\Debug\curveslib.dll
