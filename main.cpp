@@ -9,6 +9,7 @@
 #include <fstream>
 #include <iomanip>
 #include <algorithm>
+#include <omp.h>
 
 
 int main() {
@@ -40,6 +41,7 @@ int main() {
 		}
 		}
 	}
+
 	//3. Print coordinates of points and derivatives of all curves in the container at t=PI/4
 	std::cout << std::setprecision(4) << std::fixed;
 
@@ -55,15 +57,16 @@ int main() {
 	// Make sure the second container shares(i.e. not clones) circles of the first one, e.g.via pointers.
 	std::vector<std::shared_ptr<Circle>> circle_list;
 	for (int i = 0; i < curve_list.size(); ++i) {
-		if (std::dynamic_pointer_cast<Circle>(curve_list[i])){
+		if (std::dynamic_pointer_cast<Circle>(curve_list[i])) {
 			circle_list.push_back(std::dynamic_pointer_cast<Circle>(curve_list[i]));
 		}
 	}
 	std::cout << std::endl;
+
 	//5. Sort the second container in the ascending order of circles’ radii.That is, the first element has the
 	//	smallest radius, the last - the greatest.
 	std::sort(circle_list.begin(), circle_list.end(),
-		[](std::shared_ptr<Circle> &a, std::shared_ptr<Circle> &b) {
+		[](std::shared_ptr<Circle>& a, std::shared_ptr<Circle>& b) {
 			return a->getRadius() < b->getRadius();
 		}
 	);
@@ -73,10 +76,35 @@ int main() {
 	}
 	std::cout << std::endl;
 	// 6. Compute the total sum of radii of all curves in the second container.
-	double sum = 0.0;
-	for(std::shared_ptr<Circle> circle : circle_list){
-		sum += circle->getRadius();
-	}
-	std::cout << "Total sum of radii of all Circles: " << sum;
 
+	double t_sequential_begin = omp_get_wtime();
+
+	double sum_radii_sequencial = 0.0;
+	for (std::shared_ptr<Circle> circle : circle_list) {
+		sum_radii_sequencial += circle->getRadius();
+	}
+
+	double t_sequential_spend = omp_get_wtime() - t_sequential_begin;
+
+	// 8. Implement computation of the total sum of radii using parallel computations (e.g. OpenMP or Intel TBB library).
+	double sum_radii_parallel = 0.0;
+	double t_parallel_begin = omp_get_wtime();
+#pragma omp parallel
+	{
+		int steps = circle_list.size() / omp_get_num_threads();
+		for (int i = omp_get_thread_num() * steps; i < (omp_get_thread_num() + 1) * steps; ++i) {
+			sum_radii_parallel += circle_list[i]->getRadius();
+		}
+		if (omp_get_thread_num() == omp_get_num_threads() - 1) {
+			for (int i = (omp_get_thread_num() + 1) * steps; i < circle_list.size(); ++i){
+				sum_radii_parallel += circle_list[i]->getRadius();
+			}
+		}
+	}
+	double t_parallel_end = omp_get_wtime();
+	std::cout << "Execution time of sequential calculation: " <<  t_sequential_spend << std::endl;
+	std::cout << "Execution time of parallel calculation: " << t_parallel_end - t_parallel_begin << std::endl;
+	std::cout << "Sum calculated sequentially: " << sum_radii_sequencial << std::endl;
+	std::cout << "Sum calculated in parallel: " << sum_radii_parallel;
+	//Execution time of parallel calculations is longer with small input. It gets smaller with bigger input
 }
