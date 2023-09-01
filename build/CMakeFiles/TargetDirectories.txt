@@ -1,4 +1,0 @@
-C:/Users/Claire/Desktop/TestAssgnmentProject/build/CMakeFiles/curveslib.dir
-C:/Users/Claire/Desktop/TestAssgnmentProject/build/CMakeFiles/MainProject.dir
-C:/Users/Claire/Desktop/TestAssgnmentProject/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/Claire/Desktop/TestAssgnmentProject/build/CMakeFiles/ZERO_CHECK.dir
